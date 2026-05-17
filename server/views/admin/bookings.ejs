@@ -1,0 +1,91 @@
+<%- include('../partials/admin-head') %>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <main class="admin-content">
+    <section class="hero-card compact-hero">
+      <div>
+        <span class="eyebrow">Bookings Admin</span>
+        <h1>Admin Booking Management</h1>
+        <p>Admin confirms bookings, assigns drivers and vehicles, and sends confirmation mail to users.</p>
+      </div>
+    </section>
+
+    <% if (success) { %>
+      <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <section class="panel-card">
+      <div class="panel-head">
+        <div>
+          <span class="eyebrow">Booking Queue</span>
+          <h2>All Bookings</h2>
+        </div>
+      </div>
+
+      <div class="admin-record-list">
+        <% bookings.forEach((booking) => { %>
+          <article class="record-card">
+            <form method="POST" action="/admin/bookings/<%= booking._id %>/update" class="stack-form compact-form">
+              <div class="record-topbar">
+                <h3><%= booking.passengerName %> - <%= booking.route?.source || '-' %> to <%= booking.route?.destination || '-' %></h3>
+                <span class="status-pill"><%= booking.status %></span>
+              </div>
+
+              <div class="record-grid">
+                <label><span>User</span><input type="text" value="<%= booking.user?.name || 'Unknown user' %>" disabled /></label>
+                <label><span>Email</span><input type="text" value="<%= booking.user?.email || '-' %>" disabled /></label>
+                <label><span>Pickup</span><input type="text" value="<%= booking.pickupLocation %>" disabled /></label>
+                <label><span>Drop</span><input type="text" value="<%= booking.dropLocation %>" disabled /></label>
+                <label><span>Travel Date</span><input type="text" value="<%= new Date(booking.travelDate).toLocaleDateString('en-IN') %>" disabled /></label>
+                <label><span>Payment Method</span><input type="text" value="<%= booking.paymentMethod === 'online' ? 'Online Payment' : 'Cash' %>" disabled /></label>
+                <label>
+                  <span>Status</span>
+                  <select name="status">
+                    <option value="pending" <%= booking.status === 'pending' ? 'selected' : '' %>>pending</option>
+                    <option value="confirmed" <%= booking.status === 'confirmed' ? 'selected' : '' %>>confirmed</option>
+                    <option value="assigned" <%= booking.status === 'assigned' ? 'selected' : '' %>>assigned</option>
+                    <option value="completed" <%= booking.status === 'completed' ? 'selected' : '' %>>completed</option>
+                    <option value="cancelled" <%= booking.status === 'cancelled' ? 'selected' : '' %>>cancelled</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Vehicle</span>
+                  <select name="vehicle">
+                    <option value="">Unassigned</option>
+                    <% vehicleOptions.forEach((vehicle) => { %>
+                      <option value="<%= vehicle._id %>" <%= booking.vehicle && String(booking.vehicle._id) === String(vehicle._id) ? 'selected' : '' %>><%= vehicle.name %> - <%= vehicle.number %></option>
+                    <% }) %>
+                  </select>
+                </label>
+                <label>
+                  <span>Driver</span>
+                  <select name="driver">
+                    <option value="">Unassigned</option>
+                    <% driverOptions.forEach((driver) => { %>
+                      <option value="<%= driver._id %>" <%= booking.driver && String(booking.driver._id) === String(driver._id) ? 'selected' : '' %>><%= driver.name %></option>
+                    <% }) %>
+                  </select>
+                </label>
+              </div>
+
+              <% if (booking.notes) { %>
+                <div class="notes-box"><strong>Notes:</strong> <%= booking.notes %></div>
+              <% } %>
+
+              <div class="record-actions">
+                <button type="submit" class="primary-btn slim-btn">Save Booking Update</button>
+              </div>
+            </form>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

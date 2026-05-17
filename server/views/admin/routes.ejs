@@ -1,0 +1,94 @@
+<%- include('../partials/admin-head') %>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <main class="admin-content">
+    <section class="hero-card compact-hero">
+      <div>
+        <span class="eyebrow">Routes Admin</span>
+        <h1>Admin Route Management</h1>
+        <p>Only admin can add, update, and delete booking routes from this EJS page.</p>
+      </div>
+    </section>
+
+    <% if (success) { %>
+      <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <section class="split-grid drivers-grid">
+      <div class="panel-card form-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">New Route</span>
+            <h2>Add Route</h2>
+          </div>
+        </div>
+
+        <form method="POST" action="/admin/routes" class="stack-form">
+          <label><span>Source</span><input type="text" name="source" placeholder="Bhubaneswar" required /></label>
+          <label><span>Destination</span><input type="text" name="destination" placeholder="Cuttack" required /></label>
+          <label><span>Distance</span><input type="text" name="distance" placeholder="30 km" required /></label>
+          <label><span>Duration</span><input type="text" name="duration" placeholder="45 mins" required /></label>
+          <label>
+            <span>Status</span>
+            <select name="status">
+              <option value="active">active</option>
+              <option value="inactive">inactive</option>
+            </select>
+          </label>
+          <button type="submit" class="primary-btn">Add Route</button>
+        </form>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Route List</span>
+            <h2>All Routes</h2>
+          </div>
+        </div>
+
+        <div class="admin-record-list">
+          <% routes.forEach((route) => { %>
+            <article class="record-card">
+              <form method="POST" action="/admin/routes/<%= route._id %>/update" class="stack-form compact-form">
+                <div class="record-topbar">
+                  <h3><%= route.source %> to <%= route.destination %></h3>
+                  <span class="status-pill"><%= route.status %></span>
+                </div>
+
+                <div class="record-grid">
+                  <label><span>Source</span><input type="text" name="source" value="<%= route.source %>" required /></label>
+                  <label><span>Destination</span><input type="text" name="destination" value="<%= route.destination %>" required /></label>
+                  <label><span>Distance</span><input type="text" name="distance" value="<%= route.distance %>" required /></label>
+                  <label><span>Duration</span><input type="text" name="duration" value="<%= route.duration %>" required /></label>
+                  <label>
+                    <span>Status</span>
+                    <select name="status">
+                      <option value="active" <%= route.status === 'active' ? 'selected' : '' %>>active</option>
+                      <option value="inactive" <%= route.status === 'inactive' ? 'selected' : '' %>>inactive</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="record-actions">
+                  <button type="submit" class="primary-btn slim-btn">Update</button>
+                </div>
+              </form>
+
+              <form method="POST" action="/admin/routes/<%= route._id %>/delete">
+                <button type="submit" class="danger-btn slim-btn">Delete</button>
+              </form>
+            </article>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

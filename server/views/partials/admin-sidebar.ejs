@@ -1,0 +1,23 @@
+<aside class="admin-sidebar">
+  <div>
+    <div class="brand-block">
+      <div class="brand-badge">TMS</div>
+      <div>
+        <h2>Admin Control</h2>
+        <p><%= adminEmail %></p>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="/admin/dashboard" class="<%= currentPath === '/admin/dashboard' ? 'active' : '' %>">Dashboard</a>
+      <a href="/admin/drivers" class="<%= currentPath === '/admin/drivers' ? 'active' : '' %>">Drivers</a>
+      <a href="/admin/vehicles" class="<%= currentPath === '/admin/vehicles' ? 'active' : '' %>">Vehicles</a>
+      <a href="/admin/routes" class="<%= currentPath === '/admin/routes' ? 'active' : '' %>">Routes</a>
+      <a href="/admin/bookings" class="<%= currentPath === '/admin/bookings' ? 'active' : '' %>">Bookings</a>
+    </nav>
+  </div>
+
+  <form method="POST" action="/admin/logout">
+    <button type="submit" class="logout-btn">Logout</button>
+  </form>
+</aside>

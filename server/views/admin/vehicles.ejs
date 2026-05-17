@@ -1,0 +1,137 @@
+<%- include('../partials/admin-head') %>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <main class="admin-content">
+    <section class="hero-card compact-hero">
+      <div>
+        <span class="eyebrow">Vehicles Admin</span>
+        <h1>Admin Vehicle Management</h1>
+        <p>Only admin can add, update, and delete vehicles from this EJS page.</p>
+      </div>
+    </section>
+
+    <% if (success) { %>
+      <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <section class="split-grid drivers-grid">
+      <div class="panel-card form-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">New Vehicle</span>
+            <h2>Add Vehicle</h2>
+          </div>
+        </div>
+
+        <form method="POST" action="/admin/vehicles" class="stack-form">
+          <label>
+            <span>Vehicle Name</span>
+            <input type="text" name="name" placeholder="Fleet name" required />
+          </label>
+
+          <label>
+            <span>Vehicle Number</span>
+            <input type="text" name="number" placeholder="OD-02-AB-1234" required />
+          </label>
+
+          <label>
+            <span>Type</span>
+            <select name="type">
+              <option>Truck</option>
+              <option>Mini Truck</option>
+              <option>Bus</option>
+              <option>Van</option>
+              <option>Car</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Capacity</span>
+            <input type="number" name="capacity" placeholder="15" required />
+          </label>
+
+          <label>
+            <span>Status</span>
+            <select name="status">
+              <option value="available">available</option>
+              <option value="active">active</option>
+              <option value="maintenance">maintenance</option>
+            </select>
+          </label>
+
+          <button type="submit" class="primary-btn">Add Vehicle</button>
+        </form>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Vehicle List</span>
+            <h2>All Vehicles</h2>
+          </div>
+        </div>
+
+        <div class="admin-record-list">
+          <% vehicles.forEach((vehicle) => { %>
+            <article class="record-card">
+              <form method="POST" action="/admin/vehicles/<%= vehicle._id %>/update" class="stack-form compact-form">
+                <div class="record-topbar">
+                  <h3><%= vehicle.name %></h3>
+                  <span class="status-pill"><%= vehicle.status %></span>
+                </div>
+
+                <div class="record-grid">
+                  <label>
+                    <span>Name</span>
+                    <input type="text" name="name" value="<%= vehicle.name %>" required />
+                  </label>
+                  <label>
+                    <span>Number</span>
+                    <input type="text" name="number" value="<%= vehicle.number %>" required />
+                  </label>
+                  <label>
+                    <span>Type</span>
+                    <select name="type">
+                      <option value="Truck" <%= vehicle.type === 'Truck' ? 'selected' : '' %>>Truck</option>
+                      <option value="Mini Truck" <%= vehicle.type === 'Mini Truck' ? 'selected' : '' %>>Mini Truck</option>
+                      <option value="Bus" <%= vehicle.type === 'Bus' ? 'selected' : '' %>>Bus</option>
+                      <option value="Van" <%= vehicle.type === 'Van' ? 'selected' : '' %>>Van</option>
+                      <option value="Car" <%= vehicle.type === 'Car' ? 'selected' : '' %>>Car</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Capacity</span>
+                    <input type="number" name="capacity" value="<%= vehicle.capacity %>" required />
+                  </label>
+                  <label>
+                    <span>Status</span>
+                    <select name="status">
+                      <option value="available" <%= vehicle.status === 'available' ? 'selected' : '' %>>available</option>
+                      <option value="active" <%= vehicle.status === 'active' ? 'selected' : '' %>>active</option>
+                      <option value="maintenance" <%= vehicle.status === 'maintenance' ? 'selected' : '' %>>maintenance</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="record-actions">
+                  <button type="submit" class="primary-btn slim-btn">Update</button>
+                </div>
+              </form>
+
+              <form method="POST" action="/admin/vehicles/<%= vehicle._id %>/delete">
+                <button type="submit" class="danger-btn slim-btn">Delete</button>
+              </form>
+            </article>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

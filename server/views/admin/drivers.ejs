@@ -1,0 +1,127 @@
+<%- include('../partials/admin-head') %>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <main class="admin-content">
+    <section class="hero-card compact-hero">
+      <div>
+        <span class="eyebrow">Drivers Admin</span>
+        <h1>Admin Driver Management</h1>
+        <p>Only admin can add, update, and delete drivers from this EJS page.</p>
+      </div>
+    </section>
+
+    <% if (success) { %>
+      <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <section class="split-grid drivers-grid">
+      <div class="panel-card form-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">New Driver</span>
+            <h2>Add Driver</h2>
+          </div>
+        </div>
+
+        <form method="POST" action="/admin/drivers" class="stack-form">
+          <label>
+            <span>Driver Name</span>
+            <input type="text" name="name" placeholder="Full driver name" required />
+          </label>
+
+          <label>
+            <span>Phone</span>
+            <input type="text" name="phone" placeholder="+91 9876543210" required />
+          </label>
+
+          <label>
+            <span>License</span>
+            <input type="text" name="license" placeholder="DL-123456789" required />
+          </label>
+
+          <label>
+            <span>Assigned Vehicle</span>
+            <input type="text" name="vehicle" placeholder="OD-02-AB-1234" />
+          </label>
+
+          <label>
+            <span>Status</span>
+            <select name="status">
+              <option value="active">active</option>
+              <option value="available">available</option>
+              <option value="on trip">on trip</option>
+              <option value="unavailable">unavailable</option>
+            </select>
+          </label>
+
+          <button type="submit" class="primary-btn">Add Driver</button>
+        </form>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Driver List</span>
+            <h2>All Drivers</h2>
+          </div>
+        </div>
+
+        <div class="admin-record-list">
+          <% drivers.forEach((driver) => { %>
+            <article class="record-card">
+              <form method="POST" action="/admin/drivers/<%= driver._id %>/update" class="stack-form compact-form">
+                <div class="record-topbar">
+                  <h3><%= driver.name %></h3>
+                  <span class="status-pill"><%= driver.status %></span>
+                </div>
+
+                <div class="record-grid">
+                  <label>
+                    <span>Name</span>
+                    <input type="text" name="name" value="<%= driver.name %>" required />
+                  </label>
+                  <label>
+                    <span>Phone</span>
+                    <input type="text" name="phone" value="<%= driver.phone %>" required />
+                  </label>
+                  <label>
+                    <span>License</span>
+                    <input type="text" name="license" value="<%= driver.license %>" required />
+                  </label>
+                  <label>
+                    <span>Assigned Vehicle</span>
+                    <input type="text" name="vehicle" value="<%= driver.vehicle || '' %>" />
+                  </label>
+                  <label>
+                    <span>Status</span>
+                    <select name="status">
+                      <option value="active" <%= driver.status === 'active' ? 'selected' : '' %>>active</option>
+                      <option value="available" <%= driver.status === 'available' ? 'selected' : '' %>>available</option>
+                      <option value="on trip" <%= driver.status === 'on trip' ? 'selected' : '' %>>on trip</option>
+                      <option value="unavailable" <%= driver.status === 'unavailable' ? 'selected' : '' %>>unavailable</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="record-actions">
+                  <button type="submit" class="primary-btn slim-btn">Update</button>
+                </div>
+              </form>
+
+              <form method="POST" action="/admin/drivers/<%= driver._id %>/delete">
+                <button type="submit" class="danger-btn slim-btn">Delete</button>
+              </form>
+            </article>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

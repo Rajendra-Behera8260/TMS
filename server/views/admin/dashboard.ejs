@@ -1,0 +1,104 @@
+<%- include('../partials/admin-head') %>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <main class="admin-content">
+    <section class="hero-card">
+      <div>
+        <span class="eyebrow">Admin Overview</span>
+        <h1>Transport Management Admin Dashboard</h1>
+        <p>Only the admin can add drivers and vehicles from this server-rendered dashboard.</p>
+      </div>
+      <div class="hero-pill">EJS Powered</div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <span>Total Drivers</span>
+        <strong><%= stats.totalDrivers %></strong>
+      </article>
+      <article class="stat-card">
+        <span>Active Drivers</span>
+        <strong><%= stats.activeDrivers %></strong>
+      </article>
+      <article class="stat-card">
+        <span>Total Vehicles</span>
+        <strong><%= stats.totalVehicles %></strong>
+      </article>
+      <article class="stat-card">
+        <span>Active Vehicles</span>
+        <strong><%= stats.activeVehicles %></strong>
+      </article>
+    </section>
+
+    <section class="split-grid">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Latest Drivers</span>
+            <h2>Recently Added Drivers</h2>
+          </div>
+          <a href="/admin/drivers" class="text-link">Manage Drivers</a>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>License</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% drivers.forEach((driver) => { %>
+                <tr>
+                  <td><%= driver.name %></td>
+                  <td><%= driver.phone %></td>
+                  <td><%= driver.license %></td>
+                  <td><span class="status-pill"><%= driver.status %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Latest Vehicles</span>
+            <h2>Recently Added Vehicles</h2>
+          </div>
+          <a href="/admin/vehicles" class="text-link">Manage Vehicles</a>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Number</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% vehicles.forEach((vehicle) => { %>
+                <tr>
+                  <td><%= vehicle.name %></td>
+                  <td><%= vehicle.number %></td>
+                  <td><%= vehicle.type %></td>
+                  <td><span class="status-pill"><%= vehicle.status %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

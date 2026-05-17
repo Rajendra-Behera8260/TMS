@@ -1,0 +1,30 @@
+<%- include('../partials/admin-head') %>
+<div class="login-shell">
+  <div class="login-card">
+    <div class="login-intro">
+      <span class="eyebrow">TMS Secure Admin</span>
+      <h1>Admin Dashboard Login</h1>
+      <p>Use the fixed admin email and password from your <code>.env</code> file to access the EJS admin panel.</p>
+    </div>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/admin/login" class="stack-form">
+      <label>
+        <span>Admin Email</span>
+        <input type="email" name="email" placeholder="<%= adminEmail %>" required />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" name="password" placeholder="Enter admin password" required />
+      </label>
+
+      <button type="submit" class="primary-btn full-width">Login to Admin Dashboard</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
