@@ -29,8 +29,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
+
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true });
+  res.json({ ok: true, message: "Server is running" });
 });
 
 app.use("/admin", require("./routes/adminRoutes"));
